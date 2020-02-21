@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="推荐一下阅读大项目神器OpenGrok">
+
+
+
+
+  <meta name="keywords" content="OpenGrok,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="xxp-blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://www.xiaoxinpeng.com/2018/09/01/opengrok/">
+
+
+<meta name="description" content="前言当进入到一个陌生的大型项目,  又或是为了疑难杂症要去阅读开源项目, 比如AOSP、OpenJDK 或 Linux Kernel这种大型开源项目,  会发现这些项目,  不仅仅代码量大得惊人(AOSP clone下来就有50G了),  还常常混合多种语言.  如何快速准确的查找代码调用关系、理清逻辑,  是非常大的挑战.  能胜任这种场景的工具,  可能只有Source Insight.">
+<meta name="keywords" content="OpenGrok">
+<meta property="og:type" content="article">
+<meta property="og:title" content="推荐一下阅读大项目神器OpenGrok">
+<meta property="og:url" content="http://www.xiaoxinpeng.com/2018/09/01/opengrok/index.html">
+<meta property="og:site_name" content="xxp-blog">
+<meta property="og:description" content="前言当进入到一个陌生的大型项目,  又或是为了疑难杂症要去阅读开源项目, 比如AOSP、OpenJDK 或 Linux Kernel这种大型开源项目,  会发现这些项目,  不仅仅代码量大得惊人(AOSP clone下来就有50G了),  还常常混合多种语言.  如何快速准确的查找代码调用关系、理清逻辑,  是非常大的挑战.  能胜任这种场景的工具,  可能只有Source Insight.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://img.alicdn.com/tfs/TB1z5izqpkoBKNjSZFkXXb4tFXa-2016-1442.png">
+<meta property="og:image" content="https://img.alicdn.com/tfs/TB1gDfeqBsmBKNjSZFsXXaXSVXa-1200-675.jpg">
+<meta property="og:image" content="https://img.alicdn.com/tfs/TB1G6FUqtcnBKNjSZR0XXcFqFXa-650-613.png">
+<meta property="og:image" content="https://img.alicdn.com/tfs/TB1aQmrqLImBKNjSZFlXXc43FXa-1383-837.png">
+<meta property="og:image" content="https://img.alicdn.com/tfs/TB18x9do7UmBKNjSZFOXXab2XXa-2774-1750.png">
+<meta property="og:image" content="https://img.alicdn.com/tfs/TB1uHNZo_qWBKNjSZFAXXanSpXa-1786-976.png">
+<meta property="og:updated_time" content="2019-07-30T13:51:01.016Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="推荐一下阅读大项目神器OpenGrok">
+<meta name="twitter:description" content="前言当进入到一个陌生的大型项目,  又或是为了疑难杂症要去阅读开源项目, 比如AOSP、OpenJDK 或 Linux Kernel这种大型开源项目,  会发现这些项目,  不仅仅代码量大得惊人(AOSP clone下来就有50G了),  还常常混合多种语言.  如何快速准确的查找代码调用关系、理清逻辑,  是非常大的挑战.  能胜任这种场景的工具,  可能只有Source Insight.">
+<meta name="twitter:image" content="https://img.alicdn.com/tfs/TB1z5izqpkoBKNjSZFkXXb4tFXa-2016-1442.png">
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/css/style.css?v=1.1">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> 推荐一下阅读大项目神器OpenGrok - xxp-blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">xxp-blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          推荐一下阅读大项目神器OpenGrok
+        
+      </h1>
+
+      <time class="post-time">
+          Sep 1 2018
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>当进入到一个陌生的大型项目,  又或是为了疑难杂症要去阅读开源项目, 比如<a href="https://source.android.com/" target="_blank" rel="noopener">AOSP</a>、<a href="http://openjdk.java.net/" target="_blank" rel="noopener">OpenJDK</a> 或 <a href="https://www.kernel.org/" target="_blank" rel="noopener">Linux Kernel</a>这种大型开源项目,  会发现这些项目,  不仅仅代码量大得惊人(AOSP clone下来就有50G了),  还常常混合多种语言.  如何快速准确的查找代码调用关系、理清逻辑,  是非常大的挑战.  能胜任这种场景的工具,  可能只有Source Insight.  </p>
+<p>因为<a href="https://www.sourceinsight.com" target="_blank" rel="noopener">Source Insight</a>,  可以提供：</p>
+<ul>
+<li>准确完善的代码解析和分析查找功能</li>
+<li>极高的性能</li>
+<li>极低的系统资源占用</li>
+</ul>
+<p>可惜SI只在<strong>Win</strong>平台上面有.  在Mac上,  用Wine或者用虚拟机来启动它，又慢又不稳定. </p>
+<h3 id="1-常见编辑器能替代SI吗"><a href="#1-常见编辑器能替代SI吗" class="headerlink" title="1 常见编辑器能替代SI吗?"></a>1 常见编辑器能替代SI吗?</h3><h4 id="1-1-IDE"><a href="#1-1-IDE" class="headerlink" title="1.1 IDE"></a>1.1 IDE</h4><p><a href="https://www.jetbrains.com/idea/" target="_blank" rel="noopener">IntelliJ</a> 或Eclipse等IDE, 主要还是用来写代码的,  这会导致IDE, 不适应我们阅读源码的场景. </p>
+<p>比如AOSP项目,  是由接近300个子项目组成,  这些子项目中,  像 <a href="https://android.googlesource.com/platform/external/chromium-webview/" target="_blank" rel="noopener">chrominum</a> 本身就是一个复杂项目,  有着自己的代码结构和编译配置.  IDE大多针对某种语言的垂直场景,  适应不了这么复杂的场景.  </p>
+<p>如果不把项目build success,  并且把依赖按照IDE的方式配置好. 就得面对一堆堆的红色报错, 和部分功能不可用的问题.  但是,  AOSP之类的源码,  build非常麻烦,  编译成本非常高.  一方面是编译时间,  一方面是会占用海量的硬盘空间.  最新AOSP, 不开启CCACHE, 编译后, 会占100G左右空间.  如果开启默认建议的20+G 的CCACHE,  会占用更多硬盘空间.  </p>
+<p>还有就是,  IDE大多针对中小型项目的开发,  从IDE设计者的角度,  是用空间换时间,  所以消耗的资源, 是与项目大小强相关的,  项目越大消耗的资源就越大,  load 大项目的IDEA, 简直卡得不要不要的 </p>
+<h4 id="1-2-Vim-vim-awesome插件包"><a href="#1-2-Vim-vim-awesome插件包" class="headerlink" title="1.2  Vim + vim-awesome插件包"></a>1.2  Vim + vim-awesome插件包</h4><p>不管什么编辑器,  我都会安装Vim plugin,   所以我也非常喜欢独立的,  通过<a href="https://vimawesome.com" target="_blank" rel="noopener">vim-awesome</a>配置的Vim环境。当然,  少不了会安装ctags+cscope+NERDTree 等等插件包。 </p>
+<p>不过,  说实话,  这种环境,  偶尔秀一下还可以,  真要在一个陌生项目中,  频繁的跳转和查找调用关系，手很容易抽筋的.  这种环境更适合阅读和开发有一定熟悉度的代码，而不适合相对陌生, 需要频繁查找和跳转的大型项目。</p>
+<h4 id="1-3-Sublime-Atom-VS-Code"><a href="#1-3-Sublime-Atom-VS-Code" class="headerlink" title="1.3  Sublime  || Atom || VS Code"></a>1.3  Sublime  || Atom || VS Code</h4><p>另一种常见环境，是基于Sublime+ctags+cscope。</p>
+<p>Sublime 有一个至今未解决的,  具有普遍性的bug  <a href="https://www.google.com/search?newwindow=1&amp;q=Sublime+keeps+indexing+and+heating+up+my+computer&amp;oq=Sublime+keeps+indexing+and+heating+up+my+computer" target="_blank" rel="noopener">Sublime keeps indexing and heating up my computer</a>.  这个bug,  在open 文件多的大型项目后,  即使用户什么都不做,  它都会不停的index, 导致笔记本严重发热,  电量快速下降.  </p>
+<p>另外,  Sublime已经逐渐被一些插件开发者抛弃, 类似material-theme的 <a href="https://github.com/equinusocio/material-theme#deprecation-note" target="_blank" rel="noopener">Deprecation note</a>    </p>
+<h4 id="1-4-ctags-amp-cscope的问题"><a href="#1-4-ctags-amp-cscope的问题" class="headerlink" title="1.4 ctags &amp; cscope的问题"></a>1.4 ctags &amp; cscope的问题</h4><p>无论是把Sublime换成Atom 或 VS Code,  又或是Vim环境,  都会遇到下面这两个问题:  </p>
+<p>第一,  ctags &amp; cscope都不支持增量索引,  每次更新代码后,  都需要对整个项目重建索引,  时间成本非常高</p>
+<p>第二,  ctags默认配置对包含java  c++等多语言的项目支持比较差.  要确保准确解析包含多语言的项目,  需要配置下面这种,  天书一样的参数.  </p>
+<p><img src="https://img.alicdn.com/tfs/TB1z5izqpkoBKNjSZFkXXb4tFXa-2016-1442.png" alt="ctag-config"></p>
+<h3 id="2-体验OpenGrok"><a href="#2-体验OpenGrok" class="headerlink" title="2. 体验OpenGrok"></a>2. 体验OpenGrok</h3><p>一个偶然的机会，我找到了Sun的<a href="https://oracle.github.io/opengrok/" target="_blank" rel="noopener">OpenGrok</a>,  OpenGrok的界面,  浓浓的历史味道,  让人觉得这货不简单.  随着长时间的体验,  我更认定它就是Source Insight在Mac平台的替代品。 </p>
+<blockquote>
+<p>OpenGrok is a source code search and cross reference engine. It helps programmers to search, cross-reference and navigate source code trees  </p>
+</blockquote>
+<h4 id="2-1-使用OpenGrok的案例"><a href="#2-1-使用OpenGrok的案例" class="headerlink" title="2.1 使用OpenGrok的案例"></a>2.1 使用OpenGrok的案例</h4><p>非常多的公益大型源码阅读网站,  是基于OpenGrok部署的, 可以体验</p>
+<ul>
+<li><a href="http://opengrok.libreoffice.org/" target="_blank" rel="noopener">http://opengrok.libreoffice.org/</a> — LibreOffice</li>
+<li><a href="http://androidxref.com/" target="_blank" rel="noopener">http://androidxref.com/</a> — Android</li>
+<li><a href="http://src.illumos.org/source/" target="_blank" rel="noopener">http://src.illumos.org/source/</a> — illumos, FreeBSD, Linux</li>
+</ul>
+<p><img src="https://img.alicdn.com/tfs/TB1gDfeqBsmBKNjSZFsXXaXSVXa-1200-675.jpg" alt="main-ui"></p>
+<h3 id="3-OpenGrok的功能介绍"><a href="#3-OpenGrok的功能介绍" class="headerlink" title="3 OpenGrok的功能介绍"></a>3 OpenGrok的功能介绍</h3><h4 id="3-1-Analysis功能"><a href="#3-1-Analysis功能" class="headerlink" title="3.1 Analysis功能"></a>3.1 Analysis功能</h4><p>OpenGrok有强大的Analysis功能</p>
+<p>Analysis支持主流的版本控制系统, 如CVS、Git、Mercurial等,  并能对SCM的记录进行分析,  然后提供快速查找history和展示Annotations的功能.</p>
+<p>Analysis还内置了很多分析引擎,  比如C/C++,  比如Shell,  比如XML等等,  在index的过程中,  每个文件,  会分配到这些引擎上解析,  为源码的变量/对象、结构体/类、函数/接口、宏等生成可供快速搜索的索引文件</p>
+<p><img src="https://img.alicdn.com/tfs/TB1G6FUqtcnBKNjSZR0XXcFqFXa-650-613.png" alt="analysis"></p>
+<h4 id="3-2-搜索功能"><a href="#3-2-搜索功能" class="headerlink" title="3.2 搜索功能"></a>3.2 搜索功能</h4><p>与IDE的侧边栏文件树不同,  OpenGrok提供的是搜索直达.  这也非常符合我们看源码的场景,  源码非常庞杂,  我们常常是带着问题,  以某个函数或接口切入,  去摸索的.  </p>
+<p>OpenGrok的搜索功能是非常强大的:  </p>
+<ol>
+<li>对 full text, definitions, symbols, path 或 revision history等进行搜索</li>
+<li>限制在某个子目录里面搜索</li>
+<li>支持类似Google Search的搜索语法,  比如  <strong>path:Makefile defs:target</strong></li>
+<li>支持根据修改时间段进行搜索</li>
+<li>支持模糊匹配搜索,  <strong>*</strong> 匹配多个字符,  <strong>?</strong> 匹配单个字符</li>
+<li>支持正则  <strong>path:/ma[a-zA-Z]*/</strong></li>
+<li>支持多条件 <strong>-“/usr/bin/perl” +”/bin/perl”</strong></li>
+<li>极速.  得益于index和<a href="https://lucene.apache.org/core/" target="_blank" rel="noopener">Apache Lucene</a>, 可以在几十万文件中, 进行多条件搜索,  只需要几毫秒 </li>
+</ol>
+<p>详细的搜索帮助, 可以通过点击搜索框底部的<strong>help</strong>按钮进行学习,  会路由到一个help.jsp页面,  如 <a href="https://opengrok.housegordon.com/source/help.jsp" target="_blank" rel="noopener">https://opengrok.housegordon.com/source/help.jsp</a>  </p>
+<p>一个搜索到例子如下:</p>
+<p><img src="https://img.alicdn.com/tfs/TB1aQmrqLImBKNjSZFlXXc43FXa-1383-837.png" alt="opengrok-search"></p>
+<h4 id="3-3-主界面使用"><a href="#3-3-主界面使用" class="headerlink" title="3.3 主界面使用"></a>3.3 主界面使用</h4><h5 id="3-3-1-Navigate"><a href="#3-3-1-Navigate" class="headerlink" title="3.3.1 Navigate"></a>3.3.1 Navigate</h5><p>点击导航栏上面的 Navigate# ,  可以切换右侧方法列表展示</p>
+<p><img src="https://img.alicdn.com/tfs/TB18x9do7UmBKNjSZFOXXab2XXa-2774-1750.png" alt="image"></p>
+<h5 id="3-3-2-intelligence-window"><a href="#3-3-2-intelligence-window" class="headerlink" title="3.3.2 intelligence window"></a>3.3.2 intelligence window</h5><p>先把鼠标箭头,  移动到目标方法上面,  然后按一下键盘上的数字 1,  可以呼出 intelligence window </p>
+<p>这里面有 </p>
+<ul>
+<li>Highlight / UnHighlight </li>
+<li>Search definitions </li>
+<li>Search references</li>
+</ul>
+<p>等等辅助理解代码关系的功能</p>
+<p><img src="https://img.alicdn.com/tfs/TB1uHNZo_qWBKNjSZFAXXanSpXa-1786-976.png" alt="image"></p>
+<h5 id><a href="#" class="headerlink" title=" "></a> </h5><h5 id="3-3-3-highlight"><a href="#3-3-3-highlight" class="headerlink" title="3.3.3 highlight"></a>3.3.3 highlight</h5><p>先把鼠标箭头,  移动到目标方法上面,  然后按一下键盘上的数字 2,  可以快速切换Highlight / UnHighlight </p>
+<p>这个功能,  在理解某个方法的时候非常有用.</p>
+<h3 id="4-安装本地OpenGrok"><a href="#4-安装本地OpenGrok" class="headerlink" title="4 安装本地OpenGrok"></a>4 安装本地OpenGrok</h3><p>受制于网络情况和GFW,  本地会更加实用.  <a href="https://github.com/oracle/opengrok/wiki/How-to-setup-OpenGrok" target="_blank" rel="noopener">官方安装流程</a> 分为几大步骤:</p>
+<ol>
+<li>安装tomcat</li>
+<li>安装ctags</li>
+<li>安装opengrok</li>
+<li>部署opengrok到tomcat</li>
+<li>配置参数</li>
+<li>索引代码, 开始使用  </li>
+</ol>
+<h4 id="4-1-我推荐的安装版本"><a href="#4-1-我推荐的安装版本" class="headerlink" title="4.1 我推荐的安装版本"></a>4.1 我推荐的安装版本</h4><p>我之前有搭建了最新版本的OpenGrok + Universal Ctags,  但是我在索引Android源码的时候,  遇到了很多问题, 比如说android.view.View这种复杂一点的类,  会解析不完整.   但是同样基于OpenGrok的  <a href="http://androidxref.com/" target="_blank" rel="noopener">AndroidXRef</a> 就可以完美解析</p>
+<p>我后来有去咨询OpenGrok, 得到的回复如下:  </p>
+<blockquote>
+<p>For reference, androidxref seems to be using 0.11.1 </p>
+</blockquote>
+<p>然后, 我测试了, 从0.11.1到1.0等多个版本,  发现,  只要是可以使用Exuberant Ctags,  就没有问题. 1.0以后逐渐默认切到了Universal ctags,  但还不够成熟,  在大型项目的兼容性上,  还不是特别稳定<br>最终, 我在Mac下使用了如下版本进行搭建,  可以完美解析Android 源码和其他各个大型项目源码:</p>
+<ul>
+<li>JDK 8 </li>
+<li><a href="https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.31/bin/" target="_blank" rel="noopener">tomcat 8.5.31</a></li>
+<li><a href="https://github.com/oracle/opengrok/releases/download/1.0/opengrok-1.0.tar.gz" target="_blank" rel="noopener">OpenGrok 1.0 tar</a> </li>
+<li>Exuberant Ctags 5.8  </li>
+</ul>
+<h4 id="4-2-具体安装流程"><a href="#4-2-具体安装流程" class="headerlink" title="4.2 具体安装流程"></a>4.2 具体安装流程</h4><h5 id="4-2-1-安装Tomcat"><a href="#4-2-1-安装Tomcat" class="headerlink" title="4.2.1 安装Tomcat"></a>4.2.1 安装Tomcat</h5><p>我们下载<a href="https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.31/bin/apache-tomcat-8.5.31.zip" target="_blank" rel="noopener">tomcat 8.5.31</a>, 解压到目录, 比如~/env/tomcat, 然后将该目录添加到环境变量<br>export OPENGROK_TOMCAT_BASE=~/env/tomcat</p>
+<h5 id="4-2-2-安装ctags"><a href="#4-2-2-安装ctags" class="headerlink" title="4.2.2 安装ctags"></a>4.2.2 安装ctags</h5><p>使用 brew install ctags  安装ctags, 并确保 ctags —version 输出的, 是Exuberant Ctags  </p>
+<h5 id="4-2-3-安装opengrok"><a href="#4-2-3-安装opengrok" class="headerlink" title="4.2.3 安装opengrok"></a>4.2.3 安装opengrok</h5><p>下载<a href="https://github.com/oracle/opengrok/releases/download/1.0/opengrok-1.0.tar.gz" target="_blank" rel="noopener">OpenGrok 1.0 tar</a> , 并解压到目录,比如 ~/opengrok, 然后将该目录添加到环境变量:  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> OPENGROK_INSTANCE_BASE=~/opengrok</span><br></pre></td></tr></table></figure>
+<h5 id="4-2-4-部署opengrok到tomcat"><a href="#4-2-4-部署opengrok到tomcat" class="headerlink" title="4.2.4 部署opengrok到tomcat"></a>4.2.4 部署opengrok到tomcat</h5><p>在命令行进入刚才的~/opengrok/bin目录, 执行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./OpenGrok deploy</span><br></pre></td></tr></table></figure></p>
+<p>可以看到如下输出   </p>
+<blockquote>
+<p>Loading the default instance configuration …<br>Installing ./../lib/source.war to /Users/xiaoxinpeng/env/tomcat/webapps …</p>
+</blockquote>
+<p>Start your application server (Tomcat),  if it is not already<br>running, or wait until it loads the just installed web  application.</p>
+<p>OpenGrok should be available on <host>:<port>/source<br>  where HOST and PORT are configured in Tomcat.</port></host></p>
+<h5 id="4-2-5-配置参数"><a href="#4-2-5-配置参数" class="headerlink" title="4.2.5 配置参数"></a>4.2.5 配置参数</h5><p>首先是对tomcat的配置, 在刚才的安装目录 ~/env/tomcat 下, 我们对conf/server.xml文件进行修改, 该文件70行附近, 有对Connector的配置, 我们加入maxHttpHeaderSize=”65536”,如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">"8080"</span> <span class="attr">protocol</span>=<span class="string">"HTTP/1.1"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">connectionTimeout</span>=<span class="string">"20000"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">maxHttpHeaderSize</span>=<span class="string">"65536"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">redirectPort</span>=<span class="string">"8443"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="4-2-6-提升index速度"><a href="#4-2-6-提升index速度" class="headerlink" title="4.2.6 提升index速度"></a>4.2.6 提升index速度</h5><p>然后是对opengrok索引速度的修改:<br>将下面几行, 加入环境变量, 即可极大加速opengrok的index速度:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_OPTS=<span class="string">"-Xmx8192m -server"</span></span><br><span class="line"><span class="built_in">export</span> OPENGROK_FLUSH_RAM_BUFFER_SIZE=<span class="string">"-m 256"</span></span><br><span class="line"><span class="comment">#下面这两行可以极大加速index的速度</span></span><br><span class="line"><span class="built_in">export</span> OPENGROK_SCAN_REPOS=<span class="literal">false</span>   </span><br><span class="line"><span class="built_in">export</span> OPENGROK_GENERATE_HISTORY=off</span><br></pre></td></tr></table></figure>
+<h5 id="4-2-7-index"><a href="#4-2-7-index" class="headerlink" title="4.2.7  index"></a>4.2.7  index</h5><p>我们先进入 ~/opengrok/bin目录</p>
+<p>再执行 <code>./OpenGrok index</code></p>
+<p>等整个索引结束以后,  在浏览器,  打开  <a href="http://127.0.0.1:8080/source/" target="_blank" rel="noopener">http://127.0.0.1:8080/source/</a>   就可以使用了</p>
+<h3 id="References"><a href="#References" class="headerlink" title="References"></a>References</h3><ul>
+<li><a href="https://github.com/oracle/opengrok/wiki" target="_blank" rel="noopener">https://github.com/oracle/opengrok/wiki</a></li>
+<li><a href="http://oracle.github.io/opengrok/" target="_blank" rel="noopener">http://oracle.github.io/opengrok/</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/OpenGrok/">OpenGrok</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2016/06/30/runtime-permission与AOP适配/">
+        <span class="next-text nav-default">runtime-permission与AOP适配</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">xinpeng.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

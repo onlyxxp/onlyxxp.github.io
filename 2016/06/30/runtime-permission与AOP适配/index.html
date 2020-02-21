@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="runtime-permission与AOP适配">
+
+
+
+
+  <meta name="keywords" content="runtime permission,AOP,权限,Android 6.0,aspectj,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="xxp-blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://www.xiaoxinpeng.com/2016/06/30/runtime-permission与AOP适配/">
+
+
+<meta name="description" content="前言Android M（6.0）开始，一个非常重要的改动，就是权限系统  Android M占比越来越高，最近仔细调研了新权限系统的特点、申请权限的流程，记录如下。 最后介绍了如何使用AOP的方式，优雅的适配新权限系统。">
+<meta name="keywords" content="runtime permission,AOP,权限,Android 6.0,aspectj">
+<meta property="og:type" content="article">
+<meta property="og:title" content="runtime-permission与AOP适配">
+<meta property="og:url" content="http://www.xiaoxinpeng.com/2016/06/30/runtime-permission与AOP适配/index.html">
+<meta property="og:site_name" content="xxp-blog">
+<meta property="og:description" content="前言Android M（6.0）开始，一个非常重要的改动，就是权限系统  Android M占比越来越高，最近仔细调研了新权限系统的特点、申请权限的流程，记录如下。 最后介绍了如何使用AOP的方式，优雅的适配新权限系统。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.xiaoxinpeng.com/images/2016/06/permission-permission-request.jpg">
+<meta property="og:image" content="http://www.xiaoxinpeng.com/images/2016/06/permission-setting.png">
+<meta property="og:image" content="http://www.xiaoxinpeng.com/images/2016/06/permission-deny-old-app-null.jpg">
+<meta property="og:image" content="http://www.xiaoxinpeng.com/images/2016/06/permission-new-app-crash.jpg">
+<meta property="og:image" content="http://www.xiaoxinpeng.com/images/2016/06/permission-request-twice.jpg">
+<meta property="og:image" content="http://www.xiaoxinpeng.com/images/2016/06/permission-explanation.jpg">
+<meta property="og:image" content="http://www.xiaoxinpeng.com/images/2016/06/permission-request-alert.jpg">
+<meta property="og:image" content="http://www.xiaoxinpeng.com/images/2016/06/permistion-code-simple.jpg">
+<meta property="og:updated_time" content="2019-07-30T13:51:01.016Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="runtime-permission与AOP适配">
+<meta name="twitter:description" content="前言Android M（6.0）开始，一个非常重要的改动，就是权限系统  Android M占比越来越高，最近仔细调研了新权限系统的特点、申请权限的流程，记录如下。 最后介绍了如何使用AOP的方式，优雅的适配新权限系统。">
+<meta name="twitter:image" content="http://www.xiaoxinpeng.com/images/2016/06/permission-permission-request.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/css/style.css?v=1.1">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> runtime-permission与AOP适配 - xxp-blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">xxp-blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          runtime-permission与AOP适配
+        
+      </h1>
+
+      <time class="post-time">
+          Jun 30 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Android M（6.0）开始，一个非常重要的改动，就是权限系统 </p>
+<p>Android M占比越来越高，最近仔细调研了<a href="https://developer.android.com/training/permissions/requesting.html#perm-check" target="_blank" rel="noopener">新权限系统的特点、申请权限的流程</a>，记录如下。</p>
+<p>最后介绍了如何使用AOP的方式，优雅的适配新权限系统。<br><a id="more"></a> </p>
+<h3 id="新权限系统特点"><a href="#新权限系统特点" class="headerlink" title="新权限系统特点"></a>新权限系统特点</h3><h4 id="运行时授权"><a href="#运行时授权" class="headerlink" title="运行时授权"></a>运行时授权</h4><p>在旧系统中安装app，会弹出一个安装确认的界面，让用户进行授权。<br>不仅不授权就无法安装这个应用，而且只能对所有权限一起授权。 如下图中左边</p>
+<p>在Android M及以后的系统中安装new app，安装过程中是不需要用户确认权限的。对应的授权方式类似iPhone，是在使用过程中，让用户针对单个权限去授权。如下图中右边是demo app在申请权限    </p>
+<blockquote>
+<p>new app： 打包时，targetSDKVersion&gt;=23   </p>
+</blockquote>
+<p><img src="/images/2016/06/permission-permission-request.jpg" alt="permission_permission_request">  </p>
+<h4 id="用户随时可修改权限"><a href="#用户随时可修改权限" class="headerlink" title="用户随时可修改权限"></a>用户随时可修改权限</h4><p>Android M以后的系统，用户随时可以去系统设置中，打开或关闭某个权限<br><img src="/images/2016/06/permission-setting.png" alt="permission_permission_request">  </p>
+<h4 id="old-app"><a href="#old-app" class="headerlink" title="old app"></a>old app</h4><p>Android 6.0为了保证兼容性，对于old app，沿用了旧系统的处理方式，且安装成功后，old app会自动获得所声明的所有权限。  </p>
+<p>那么是否old app就可以不适配新权限系统？<br>不是的，因为用户仍然可以去系统设置中，关闭old app的某个权限。  </p>
+<p>当old app使用被关闭的权限，并不会崩溃，不过相关行为会被系统忽略。<br>如果行为是获取数据，获取到的结果，会是null。 </p>
+<blockquote>
+<p>old app： 打包时，targetSDKVersion\&lt;=22    </p>
+</blockquote>
+<p><img src="/images/2016/06/permission-deny-old-app-null.jpg" alt="permission_permission_request">  </p>
+<h4 id="new-app"><a href="#new-app" class="headerlink" title="new app"></a>new app</h4><p>对于new app，使用未授权的系统接口，会崩溃：<br><img src="/images/2016/06/permission-new-app-crash.jpg" alt="permission_permission_request">  </p>
+<h3 id="权限声明"><a href="#权限声明" class="headerlink" title="权限声明"></a>权限声明</h3><h4 id="声明app已经支持新权限系统"><a href="#声明app已经支持新权限系统" class="headerlink" title="声明app已经支持新权限系统"></a>声明app已经支持新权限系统</h4><p>只需要在打包的时候，将targetSdkVersion 设置为23  </p>
+<h4 id="声明要使用的权限"><a href="#声明要使用的权限" class="headerlink" title="声明要使用的权限"></a>声明要使用的权限</h4><p>无论是new app还是old app，都需要在manifest里面，声明要使用的权限     </p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:<span class="attribute">name</span>=<span class="string">"android.permission.READ_PHONE_STATE"</span>/&gt;</span><br></pre></td></tr></table></figure>
+<p>如果是普通权限，只要声明在manifest中，就可以自动获授权。<br>如果是涉及用户隐私的敏感权限，需要app主动调用系统接口，然后系统会弹出确认页面，让用户授权。</p>
+<h4 id="敏感权限"><a href="#敏感权限" class="headerlink" title="敏感权限"></a>敏感权限</h4><p>如果app获取了某个敏感权限，同组的权限会自动获取到。<br>比如app获取了 <strong>读取联系人</strong> 的权限，那么app在申请 <strong>修改联系人</strong> 的权限时，会自动授权通过。</p>
+<p><a href="https://developer.android.com/guide/topics/security/permissions.html#normal-dangerous" target="_blank" rel="noopener">敏感权限</a> 如下表格：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>权限组</th>
+<th>权限列表</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>通讯录</td>
+<td>修改您的通讯录, 查找设备上的帐户, 读取您的通讯录</td>
+</tr>
+<tr>
+<td>电话</td>
+<td>读取通话记录, 读取手机状态和身份, 使用即时通讯通话服务, 直接拨打电话号码, 写入通话记录, 拨打/接听SIP电话, 重新设置外拨电话的路径, 添加语音邮件</td>
+</tr>
+<tr>
+<td>日历</td>
+<td>读取日历活动和机密信息, 添加或修改日历活动，并在所有者不知情的情况下向邀请对象发送电子邮件</td>
+</tr>
+<tr>
+<td>相机</td>
+<td>拍摄照片和视频</td>
+</tr>
+<tr>
+<td>安全</td>
+<td>读取手机黑名单, 更改手机黑名单</td>
+</tr>
+<tr>
+<td>身体传感器:</td>
+<td>人体传感器（如心跳速率检测器）, 使用指纹硬件</td>
+</tr>
+<tr>
+<td>位置信息</td>
+<td>精确位置（基于GPS和网络）, 大致位置（基于网络）</td>
+</tr>
+<tr>
+<td>存储空间</td>
+<td>读取您的USB存储设备中的内容, 修改或删除您的USB存储设备中的内容</td>
+</tr>
+<tr>
+<td>麦克风</td>
+<td>录音</td>
+</tr>
+<tr>
+<td>短信</td>
+<td>读取您的讯息（短信或彩信）, 接收讯息 (WAP), 接收讯息（彩信）, 接收讯息（短信）, 发送和查看短信, 读取小区广播消息</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="权限申请流程"><a href="#权限申请流程" class="headerlink" title="权限申请流程"></a>权限申请流程</h3><h4 id="需要权限的业务代码"><a href="#需要权限的业务代码" class="headerlink" title="需要权限的业务代码"></a>需要权限的业务代码</h4><p>以获取用户设备id举例例，tm.getDeviceId需要 <strong>READ_PHONE_STATE</strong> 这个权限。  </p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">readDeviceId</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    TelephonyManager tm = (TelephonyManager) <span class="keyword">this</span>.getSystemService(Context.TELEPHONY_SERVICE);</span><br><span class="line">    System.<span class="keyword">out</span>.println(<span class="string">"Permission DeviceId:"</span> + tm.getDeviceId());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="检查是否已经拥有权限"><a href="#检查是否已经拥有权限" class="headerlink" title="检查是否已经拥有权限"></a>检查是否已经拥有权限</h4><p>我们需要使用系统接口<code>checkSelfPermission</code>检查是否拥有该权限。   </p>
+<p>在确认已经获得之后，才能调用业务代码，否则app会崩溃。  </p>
+<p>无论从前是否成功获得过授权，这个检查都是必须的。因为即使app在运行状态，用户也可以去设置中，修改允许的权限。   </p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">checkSelfPermission</span><span class="params">(Manifest.permission.READ_PHONE_STATE)</span></span></span><br><span class="line">                == PackageManager.PERMISSION_GRANTE</span><br></pre></td></tr></table></figure>
+<h4 id="申请权限"><a href="#申请权限" class="headerlink" title="申请权限"></a>申请权限</h4><p>如果没有该权限，我们需要调用<code>requestPermissions</code>进行权限申请，第一个参数，是要申请的权限列表。第二个参数是请求id，在回调的时候用到。   </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">if</span> (checkSelfPermission(Manifest.permission.READ_PHONE_STATE)</span><br><span class="line">        == PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">    readDeviceId();</span><br><span class="line">&#125; <span class="built_in">else</span> &#123;</span><br><span class="line">    requestPermissions(<span class="keyword">new</span> <span class="keyword">String</span>[]&#123;Manifest.permission.READ_PHONE_STATE&#125;,</span><br><span class="line">            MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="处理回调"><a href="#处理回调" class="headerlink" title="处理回调"></a>处理回调</h4><p>权限申请的回调，是通过覆写父类函数来处理的。（权限申请页面，其实是一个activity）  </p>
+<p>我们需要在activity或fragment中，覆写<code>onRequestPermissionsResult</code>，然后根据requestCode判断是哪次权限申请的结果，来进行相应的处理：  </p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">@Override</span></span><br><span class="line">public void onRequestPermissionsResult(int requestCode, <span class="variable">@NonNull</span> String[] permissions, <span class="variable">@NonNull</span> int[] grantResults) &#123;</span><br><span class="line">    <span class="selector-tag">super</span><span class="selector-class">.onRequestPermissionsResult</span>(requestCode, permissions, grantResults);</span><br><span class="line"></span><br><span class="line">    <span class="selector-tag">switch</span> (requestCode) &#123;</span><br><span class="line">        <span class="comment">//判断是我们刚才申请的权限</span></span><br><span class="line">        <span class="selector-tag">case</span> <span class="selector-tag">MY_PERMISSIONS_REQUEST_READ_PHONE_STATE</span>:</span><br><span class="line">            <span class="selector-tag">if</span> (grantResults.length &gt; <span class="number">0</span></span><br><span class="line">                    &amp;&amp; grantResults[<span class="number">0</span>] == PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">                <span class="comment">//授权成功，调用业务代码</span></span><br><span class="line">                <span class="selector-tag">readDeviceId</span>();</span><br><span class="line">            &#125; <span class="selector-tag">else</span> &#123;</span><br><span class="line">                <span class="comment">//授权失败</span></span><br><span class="line">                <span class="selector-tag">Toast</span><span class="selector-class">.makeText</span>(this, <span class="string">"fuck you"</span>, Toast.LENGTH_LONG)<span class="selector-class">.show</span>();</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="处理“不再询问”"><a href="#处理“不再询问”" class="headerlink" title="处理“不再询问”"></a>处理“不再询问”</h4><p>如果用户之前拒绝过，当我们再次发起权限申请的时候，系统对话框会多出一个勾选框 <strong>不再询问</strong> ，如下图是前后对比：<br><img src="/images/2016/06/permission-request-twice.jpg" alt="permission_permission_request">   </p>
+<p>一旦用户 <strong>勾选</strong> 了不再询问，我们以后的权限申请，会被系统 <strong>忽略</strong> 。  </p>
+<p>所以，在进行第二次权限申请前，需要先向用户解释——为啥我们需要这个权限，当用户接受我们的解释之后，再去进行第二次权限申请     </p>
+<p>系统提供了一个接口 <code>shouldShowRequestPermissionRationale</code>，用来获取这个解释的时机。如果它返回true，我们要显示一个界面（一般为对话框），向用户解释</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//检查是否已经拥有权限</span></span><br><span class="line"><span class="built_in">if</span> (checkSelfPermission(Manifest.permission.READ_PHONE_STATE)</span><br><span class="line">        != PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">    <span class="built_in">if</span> (shouldShowRequestPermissionRationale(Manifest.permission.READ_PHONE_STATE)) &#123;</span><br><span class="line">        <span class="comment">//如果没有对应的权限，且需要向解释,就弹出解释对话框</span></span><br><span class="line">        showExplanationDialog(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="built_in">run</span>() &#123;</span><br><span class="line">                <span class="comment">//继续进行第二次申请权限</span></span><br><span class="line">                requestPermissions(<span class="keyword">new</span> <span class="keyword">String</span>[]&#123;Manifest.permission.READ_PHONE_STATE&#125;,</span><br><span class="line">                        MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; <span class="built_in">else</span> &#123;</span><br><span class="line">        <span class="comment">//如果不需要解释,直接申请权限</span></span><br><span class="line">        requestPermissions(<span class="keyword">new</span> <span class="keyword">String</span>[]&#123;Manifest.permission.READ_PHONE_STATE&#125;,</span><br><span class="line">                MY_PERMISSIONS_REQUEST_READ_PHONE_STATE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="built_in">else</span> &#123;</span><br><span class="line">    <span class="comment">//已经有权限,直接执行业务代码</span></span><br><span class="line">    readDeviceId();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>showExplanationDialog</code>是我们自定义的弹出解释对话框，比如，显示一些描述性的文字, 当用户做出正面选择后(比如下面左图中的“去打开权限”)，我们就弹出系统权限申请对话框（如下右图）<br><img src="/images/2016/06/permission-explanation.jpg" alt="permission_permission_request"> </p>
+<p>相关代码为：  </p>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> AlertDialog.Builder(TasksActivity.<span class="keyword">this</span>)</span><br><span class="line">        .setMessage(<span class="string">"打开权限,获取更好的用户体验"</span>)</span><br><span class="line">        .setPositiveButton(<span class="string">"去打开权限"</span>, <span class="keyword">new</span> DialogInterface.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">onClick</span><span class="params">(DialogInterface dialog, <span class="keyword">int</span> which)</span> </span>&#123;</span><br><span class="line">                requestPermission.run();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .setNegativeButton(<span class="string">"残忍拒绝"</span>, <span class="keyword">null</span>)</span><br><span class="line">        .create().show();</span><br></pre></td></tr></table></figure>
+<h4 id="不要在onResume中申请权限"><a href="#不要在onResume中申请权限" class="headerlink" title="不要在onResume中申请权限"></a>不要在onResume中申请权限</h4><p>测试代码的时候，发现一个现象： </p>
+<blockquote>
+<p>当用户勾选不再询问，且拒绝授权后，onResume会死循环。   </p>
+</blockquote>
+<p>原因是申请权限的对话框，其实是一个activity。用户默认拒绝的情况下，每次申请权限，就会启动它，由于默认拒绝，它会自动关闭，它关闭后会触发我们onResume中的申请权限，然后又启动这个activity，然后它关闭后又触发我们申请权限。。。<br>最后形成了死循环。  </p>
+<h4 id="旧机型兼容"><a href="#旧机型兼容" class="headerlink" title="旧机型兼容"></a>旧机型兼容</h4><p>上述系统接口，都是在sdk 23及以上才提供，为适配旧机型，只需把相关接口替换为support库中的<code>ActivityCompat.xxx</code> 即可，比如<code>ActivityCompat. requestPermissions</code></p>
+<h4 id="特殊权限申请"><a href="#特殊权限申请" class="headerlink" title="特殊权限申请"></a>特殊权限申请</h4><p><strong>显示悬浮窗</strong> 在老版本中，只需要声明以下权限即可：  </p>
+<blockquote>
+<p>android.permission.SYSTEM_ALERT_WINDOW</p>
+</blockquote>
+<p>在Android 6.0以后, 需要补充使用特殊的方式，进行申请的，会打开系统的设置页面：   </p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//检查是否有显示悬浮窗的权限</span><br><span class="line"><span class="keyword">if</span> (Settings.canDrawOverlays(<span class="keyword">target</span>)) &#123;</span><br><span class="line">    <span class="keyword">return</span> true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//去系统设置页面，需要用户手动打开</span><br><span class="line"><span class="keyword">Intent</span> <span class="keyword">intent</span> = new <span class="keyword">Intent</span>(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,</span><br><span class="line">        Uri.parse(<span class="string">"package:"</span> + packageName));</span><br><span class="line"><span class="keyword">intent</span>.setFlags(<span class="keyword">Intent</span>.FLAG_ACTIVITY_NEW_TASK);</span><br><span class="line"><span class="keyword">target</span>.startActivity(<span class="keyword">intent</span>);</span><br></pre></td></tr></table></figure>
+<p>效果如下图  </p>
+<p><img src="/images/2016/06/permission-request-alert.jpg" alt="permission_permission_request">   </p>
+<p>否则，没有此权限的new app，会直接崩溃：  </p>
+<blockquote>
+<p>Unable to add window. Permission denied for this window type</p>
+</blockquote>
+<h3 id="AOP权限申请方案"><a href="#AOP权限申请方案" class="headerlink" title="AOP权限申请方案"></a>AOP权限申请方案</h3><p>可以发现，为了适配Android 6.0的权限系统，需要在Activity或Fragment里面加入一大堆冗余代码，对原本的业务造成了很大污染。</p>
+<p><img src="/images/2016/06/permistion-code-simple.jpg" alt="permission_permission_request"> </p>
+<p><a href="https://en.wikipedia.org/wiki/Aspect-oriented_programming" target="_blank" rel="noopener">AOP</a>是为了解决这种痛点而生的。在Android中，比较优秀的AOP技术，是aspectj。 </p>
+<p>介绍一套基本无侵入的权限方案。</p>
+<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><p>在需要权限的方法上面，打上Annotation即可： </p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">RequestPermission</span>(<span class="keyword">Manifest</span>.<span class="keyword">permission</span>.<span class="keyword">READ_PHONE_STATE</span>)</span><br><span class="line"><span class="keyword">public</span> void readDeviceId() &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/runtime-permission/">runtime permission</a>
+          
+            <a href="/tags/AOP/">AOP</a>
+          
+            <a href="/tags/权限/">权限</a>
+          
+            <a href="/tags/Android-6-0/">Android 6.0</a>
+          
+            <a href="/tags/aspectj/">aspectj</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2018/09/01/opengrok/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">推荐一下阅读大项目神器OpenGrok</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/04/23/你还在用grep吗/">
+        <span class="next-text nav-default">你还在用grep吗？</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">xinpeng.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

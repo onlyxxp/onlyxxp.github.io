@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="你还在用grep吗？">
+
+
+
+
+  <meta name="keywords" content="shell,grep,ag,ack,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="xxp-blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://www.xiaoxinpeng.com/2016/04/23/你还在用grep吗/">
+
+
+<meta name="description" content="mac下grep有bugmac下，grep配合xargs会有bug这个bug，会导致CPU占用持续200%，terminal假死，机器滚烫：   复现方法，是在代码根目录执行1find . -name *.java | xargs grep -ri &quot;文件过多我会死循环&quot; 其实，这个命令在Ubuntu下面执行，是毫无压力的。多少文件都可以grep">
+<meta name="keywords" content="shell,grep,ag,ack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="你还在用grep吗？">
+<meta property="og:url" content="http://www.xiaoxinpeng.com/2016/04/23/你还在用grep吗/index.html">
+<meta property="og:site_name" content="xxp-blog">
+<meta property="og:description" content="mac下grep有bugmac下，grep配合xargs会有bug这个bug，会导致CPU占用持续200%，terminal假死，机器滚烫：   复现方法，是在代码根目录执行1find . -name *.java | xargs grep -ri &quot;文件过多我会死循环&quot; 其实，这个命令在Ubuntu下面执行，是毫无压力的。多少文件都可以grep">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-30T13:51:01.016Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="你还在用grep吗？">
+<meta name="twitter:description" content="mac下grep有bugmac下，grep配合xargs会有bug这个bug，会导致CPU占用持续200%，terminal假死，机器滚烫：   复现方法，是在代码根目录执行1find . -name *.java | xargs grep -ri &quot;文件过多我会死循环&quot; 其实，这个命令在Ubuntu下面执行，是毫无压力的。多少文件都可以grep">
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/css/style.css?v=1.1">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> 你还在用grep吗？ - xxp-blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">xxp-blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          你还在用grep吗？
+        
+      </h1>
+
+      <time class="post-time">
+          Apr 23 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h2 id="mac下grep有bug"><a href="#mac下grep有bug" class="headerlink" title="mac下grep有bug"></a>mac下grep有bug</h2><p>mac下，grep配合xargs会有bug<br>这个bug，会导致CPU占用持续200%，terminal假死，机器滚烫：  </p>
+<p>复现方法，是在代码根目录执行<br><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">find</span> . -name *.java | xargs <span class="keyword">grep</span> -<span class="keyword">ri</span> <span class="string">"文件过多我会死循环"</span></span><br></pre></td></tr></table></figure></p>
+<p>其实，这个命令在Ubuntu下面执行，是毫无压力的。多少文件都可以grep<br><a id="more"></a><br>在Mac下面， 这个命令中，grep前面的<code>find . -name *.java | xargs</code>是很快执行完的，  跟grep一配合， 文件一多，就死掉了。单纯<code>grep -ri &quot;文件过多我会死循环&quot;</code> 也不会死。</p>
+<h2 id="grep的替代者ack"><a href="#grep的替代者ack" class="headerlink" title="grep的替代者ack"></a>grep的替代者ack</h2><h3 id="ack的安装"><a href="#ack的安装" class="headerlink" title="ack的安装"></a>ack的安装</h3><p><a href="http://beyondgrep.com/" target="_blank" rel="noopener">ack官网</a>， mac下的安装方法：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>ack</span><br></pre></td></tr></table></figure>
+<h3 id="ack的使用"><a href="#ack的使用" class="headerlink" title="ack的使用"></a>ack的使用</h3><ul>
+<li>速度与find 加grep差不多，7G的目录下， 搜一段java文本，也就不到10秒</li>
+<li>ack 要搜索的字符串， 比如：  <code>ack HttpURLConnectionImpl</code></li>
+<li>提速<br>主要是 忽略一些目录 + 指定文件类型：  </li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ack <span class="attribute">--ignore-dir</span>=.git <span class="attribute">--ignore-dir</span>=build <span class="attribute">--ignore-dir</span>=.idea <span class="attribute">--type</span>=java <span class="string">"要搜索的字符串"</span></span><br></pre></td></tr></table></figure>
+<h2 id="比ack更牛逼的ag"><a href="#比ack更牛逼的ag" class="headerlink" title="比ack更牛逼的ag"></a>比ack更牛逼的ag</h2><p>ag是更快、跟方便的ack <a href="https://github.com/ggreer/the_silver_searcher" target="_blank" rel="noopener">the_silver_searcher</a><br>Ack and Ag found the same results, but Ag was <code>34x</code> faster</p>
+<h3 id="ag的用法"><a href="#ag的用法" class="headerlink" title="ag的用法"></a>ag的用法</h3><p>与ack用法基本一样，速度更快了，而且支持<code>--java</code>来限制搜索的文件类型的范围</p>
+<h3 id="ag的封装—jgrep"><a href="#ag的封装—jgrep" class="headerlink" title="ag的封装—jgrep"></a>ag的封装—jgrep</h3><p>把这个放到bashrc里面，变成好用的函数jgrep： </p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">jgrep</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ag -U --stats --java <span class="string">"$@"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">resgrep</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ag -U --stats --xml <span class="string">"$@"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>就可以这样用了：<br><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">jgrep HttpURLConnectionImpl</span></span><br></pre></td></tr></table></figure></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/shell/">shell</a>
+          
+            <a href="/tags/grep/">grep</a>
+          
+            <a href="/tags/ag/">ag</a>
+          
+            <a href="/tags/ack/">ack</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/06/30/runtime-permission与AOP适配/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">runtime-permission与AOP适配</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/02/23/shell-reinstall-apk-in-mac/">
+        <span class="next-text nav-default">用shell实现自动安装apk</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">xinpeng.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

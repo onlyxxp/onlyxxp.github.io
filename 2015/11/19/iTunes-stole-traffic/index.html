@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="iTunes账户跑流量">
+
+
+
+
+  <meta name="keywords" content="App Store,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="xxp-blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://www.xiaoxinpeng.com/2015/11/19/iTunes-stole-traffic/">
+
+
+<meta name="description" content="iOS 系统服务，消耗流量严重的问题，很多人都遇到了。其中，iTunes账户或通用跑流量极其严重">
+<meta name="keywords" content="App Store">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iTunes账户跑流量">
+<meta property="og:url" content="http://www.xiaoxinpeng.com/2015/11/19/iTunes-stole-traffic/index.html">
+<meta property="og:site_name" content="xxp-blog">
+<meta property="og:description" content="iOS 系统服务，消耗流量严重的问题，很多人都遇到了。其中，iTunes账户或通用跑流量极其严重">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-30T13:51:01.015Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iTunes账户跑流量">
+<meta name="twitter:description" content="iOS 系统服务，消耗流量严重的问题，很多人都遇到了。其中，iTunes账户或通用跑流量极其严重">
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/css/style.css?v=1.1">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> iTunes账户跑流量 - xxp-blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">xxp-blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          iTunes账户跑流量
+        
+      </h1>
+
+      <time class="post-time">
+          Nov 19 2015
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>iOS 系统服务，消耗流量严重的问题，很多人都遇到了。其中，<strong>iTunes账户</strong>或<strong>通用</strong>跑流量极其严重<br><a id="more"></a></p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>对于ios系统服务偷跑流量， 我做过下面这样的实验，看看到底偷跑流量的，是哪个系统功能</p>
+<ul>
+<li>开启移动网络，关闭wifi</li>
+<li><strong>设置-蜂窝移动网络-把所有应用的移动网络权限 关掉</strong></li>
+<li>设置-蜂窝移动网络-Wi-Fi助理  关闭</li>
+<li>设置-个人热点 关闭</li>
+<li>设置-通用-siri  关闭</li>
+<li>设置-通用-Spotlight搜索-siri建议  关闭</li>
+<li>设置-通用-语音与地区-高级-自动  关闭</li>
+<li>设置-隐私-定位服务  关闭</li>
+<li>设置-隐私-诊断 、广告   关闭</li>
+<li>设置-iCloud  点击账户，然后退出</li>
+<li>设置-iTunesStore与AppStore 所有的选项都关闭。账户不用退出</li>
+<li>设置-邮件  点击账户，然后退出</li>
+<li>设置-信息-iMessage 关闭</li>
+<li>设置-Facetime  关闭</li>
+<li>设置-音乐  都关闭</li>
+<li>设置-播客  都关闭</li>
+<li>设置-iBooks 都关闭</li>
+<li>设置-GameCenter  都关闭</li>
+<li>设置-通知  把不重要的应用，都关闭</li>
+</ul>
+<h2 id="操蛋的结果"><a href="#操蛋的结果" class="headerlink" title="操蛋的结果"></a>操蛋的结果</h2><p>然而并没有什么卵用，iTunes仍然会跑流量<br>但是跑的流量大大减小了。<br>实验描述中，高亮部分，是我从前，没有设置过的。看来这一部分，对于减少系统服务跑流量很有好处</p>
+<h2 id="推测"><a href="#推测" class="headerlink" title="推测"></a>推测</h2><blockquote>
+<p>所有应用的蜂窝移动网络都已经关闭，但是iTunes跑流量仍然跑流量，那么，肯定跟消息推有关。<br>我们不进入某个应用，比如qq，也能收到消息<br>这是因为，ios的系统推送功能，会经常在后台连接apple的服务器，获取最新的消息，然后显示给我们（锁屏或小红点）。这个取消息的过程，必然要带上appleID相关信息，而且会涉及账户验证相关操作。估计这些流量消耗会算到iTunes账户里面去。</p>
+</blockquote>
+<h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><p>保留按实验中的配置，但是开启部分应用的联网权限，比如qq、微信、浏览器等。<br>然后，加一步操作：<strong><code>设置-通用-还原-还原网络设置</code></strong></p>
+<p>这种方法，我观察过几天，iTunes账户依然会跑流量（应用通知），但是已经很少了。不使用定位的话，一天1M左右</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/App-Store/">App Store</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2015/11/27/appstore-slow/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">加速AppStore</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">xinpeng.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

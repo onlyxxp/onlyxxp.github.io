@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="用shell实现自动安装apk">
+
+
+
+
+  <meta name="keywords" content="shell,code,">
+
+
+
+
+
+  <link rel="alternate" href="/default" title="xxp-blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://www.xiaoxinpeng.com/2016/02/23/shell-reinstall-apk-in-mac/">
+
+
+<meta name="description" content="安卓研发部门，会使用持续集成。开发和测试经常需要下载并安装CI中的apk，进行功能对比或验证问题。     **看起来简单的事情，往往挺麻烦的**">
+<meta name="keywords" content="shell,code">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用shell实现自动安装apk">
+<meta property="og:url" content="http://www.xiaoxinpeng.com/2016/02/23/shell-reinstall-apk-in-mac/index.html">
+<meta property="og:site_name" content="xxp-blog">
+<meta property="og:description" content="安卓研发部门，会使用持续集成。开发和测试经常需要下载并安装CI中的apk，进行功能对比或验证问题。     **看起来简单的事情，往往挺麻烦的**">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-30T13:51:01.016Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用shell实现自动安装apk">
+<meta name="twitter:description" content="安卓研发部门，会使用持续集成。开发和测试经常需要下载并安装CI中的apk，进行功能对比或验证问题。     **看起来简单的事情，往往挺麻烦的**">
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/css/style.css?v=1.1">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+    <title> 用shell实现自动安装apk - xxp-blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">xxp-blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          用shell实现自动安装apk
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 23 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>安卓研发部门，会使用持续集成。开发和测试经常需要下载并安装CI中的apk，进行功能对比或验证问题。    </p>
+<p><blockquote class="blockquote-center">**看起来简单的事情，往往挺麻烦的**</blockquote><br><a id="more"></a></p>
+<h3 id="场景重现"><a href="#场景重现" class="headerlink" title="场景重现"></a>场景重现</h3><p>让我们复现一下场景：   </p>
+<blockquote>
+<p>我们点击了ci中的apk链接，下载apk到Download目录。作为开发，我们一般会使用adb install来安装下载的apk。所以，我们打开了terminal， 输入adb install， 再输入apk路径，或打开findle把apk拖到terminal中作为路径。这时候，惊喜来了，由于debug版本apk已经存在，我们遇到了install错误。我们打算手动卸载手机里面的apk了，我们发现，从桌面删除不了应用，需要进入设置-应用管理里面删除。删除完成后，总算成功安装了，却发现，由于下载目录里面文件比较多，导致我们安装了错误的apk文件，然后，我们打算用adb uninstall来卸载，却发现忘了包名的全称。好不容易安装成功了，我们还需要打开手机的应用列表，从中找到app图标来点击。 </p>
+</blockquote>
+<p>一个看似很简单的事情，却消耗了我们不少时间，关键，还<strong>影响了心情</strong>。</p>
+<h3 id="Don’t-be-a-hater"><a href="#Don’t-be-a-hater" class="headerlink" title="Don’t be a hater"></a>Don’t be a hater</h3><p>记住遇到问题，<strong>不要抱怨，不要躲避</strong><br>如果我们有这样一个shell脚本，它能：  </p>
+<ol>
+<li>按时间排序输出下载目录中的apk列表   </li>
+<li>让用户选择要安装的apk   </li>
+<li>安装对应的apk   </li>
+<li>自动启动应用   </li>
+</ol>
+<p>这个问题就迎刃而解了</p>
+<h3 id="分步实现"><a href="#分步实现" class="headerlink" title="分步实现"></a>分步实现</h3><h4 id="输出下载目录中的apk列表"><a href="#输出下载目录中的apk列表" class="headerlink" title="输出下载目录中的apk列表"></a>输出下载目录中的apk列表</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">list_all_apk</span></span>() &#123;</span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"found apk file in "</span><span class="string">"<span class="variable">$&#123;dir&#125;</span>"</span></span><br><span class="line">	i=0</span><br><span class="line">	<span class="keyword">for</span> file <span class="keyword">in</span> `ls -t /Users/xiaoxinpeng/Downloads/`</span><br><span class="line">	<span class="keyword">do</span></span><br><span class="line">		<span class="keyword">if</span> [ -n <span class="string">"`echo <span class="variable">$file</span> | sed -n /^.*\\.apk\$/p`"</span> ];<span class="keyword">then</span></span><br><span class="line">			<span class="built_in">echo</span> <span class="string">" [<span class="variable">$&#123;i&#125;</span>] "</span><span class="string">"<span class="variable">$&#123;file&#125;</span>"</span></span><br><span class="line">			apks[i]=<span class="string">"<span class="variable">$&#123;file&#125;</span>"</span></span><br><span class="line">			<span class="built_in">let</span> i=i+1</span><br><span class="line">		<span class="keyword">fi</span></span><br><span class="line">	<span class="keyword">done</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里牵涉到的知识点：  </p>
+<ol>
+<li>ls -t 按时间排序返回文件名数组   </li>
+<li>使用for…in…do…done关键字对该列表迭代  </li>
+<li>判断字符串非空使用 -n     </li>
+<li>使用sed匹配文件名满足apk后缀</li>
+<li>shell中数组的使用let赋值</li>
+</ol>
+<h4 id="让用户选择要安装的apk"><a href="#让用户选择要安装的apk" class="headerlink" title="让用户选择要安装的apk"></a>让用户选择要安装的apk</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">let_user_select_apk_to_install</span></span>() &#123;</span><br><span class="line">	<span class="built_in">read</span> ANSWER</span><br><span class="line">	<span class="keyword">case</span> <span class="variable">$ANSWER</span> <span class="keyword">in</span></span><br><span class="line">        <span class="string">""</span>)</span><br><span class="line">            <span class="built_in">echo</span> <span class="string">"un selected, reinstall [0] apk"</span></span><br><span class="line">            reinstall_lastest_apk <span class="variable">$&#123;apks&#125;</span> <span class="variable">$1</span></span><br><span class="line">            ;;</span><br><span class="line">        *)</span><br><span class="line">            <span class="built_in">echo</span></span><br><span class="line">            apk_file=<span class="string">"/Users/xiaoxinpeng/Downloads/<span class="variable">$&#123;apks[$&#123;ANSWER&#125;</span>]&#125;"</span></span><br><span class="line">            install_apk <span class="string">"<span class="variable">$&#123;apk_file&#125;</span>"</span></span><br><span class="line">            ;;</span><br><span class="line">        <span class="keyword">esac</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>涉及的知识点：  </p>
+<ol>
+<li>使用read读取用户输入   </li>
+<li>shell中case的用法，注意<code>*)</code>相当于default    </li>
+<li>shell中数组的值<code>${apks[${ANSWER}]}</code>   </li>
+</ol>
+<h4 id="安装apk"><a href="#安装apk" class="headerlink" title="安装apk"></a>安装apk</h4><p>安装apk比较简单，注意这里是先使用adb uninstall进行旧apk卸载  ，另外使用echo不加任何参数，可以输出空行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">install_apk</span></span>() &#123;</span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"uninstall old apk ..."</span></span><br><span class="line">	adb uninstall <span class="string">"com.sds.android.ttpod"</span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">echo</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"install new apk: "</span><span class="string">"<span class="variable">$1</span>"</span></span><br><span class="line">	adb install <span class="string">"<span class="variable">$&#123;apk_file&#125;</span>"</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="string">"finish..."</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">#adb shell am start -n "com.sds.android.ttpod/com.ali.music.funzone.app.SplashActivity" -a android.intent.action.MAIN -c android.intent.category.LAUNCHER</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>另一个技巧，是使用command来检测用户是否安装了某个程序。这里用来做adb是否安装的检测：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">check_has_adb</span></span>() &#123;</span><br><span class="line">    <span class="built_in">command</span> -v adb &gt;/dev/null 2&gt;&amp;1 || &#123; <span class="built_in">echo</span> &gt;&amp;2 <span class="string">"require adb in android sdk, but it's not in you PATH.  Aborting."</span>; <span class="built_in">exit</span> 2;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面这代码看起来简单，其实涉及了两个重要知识点   </p>
+<ol>
+<li>管道的使用。这个<code>||</code>管道是仅当前面的表达式返回非零（<strong>失败</strong>）退出值时，才处理跟在此符号后的列表。  管道<code>&amp;&amp;</code>仅当前面的管道返回退出值零 (<strong>成功</strong>) 时，才处理跟在此符号后的列表. 管道<code>|</code>前面的命令会作为后面命令的输入。</li>
+<li>输出重定向。这里的<code>2&gt;&amp;1</code>是将标准出错重定向到标准输出，这里的标准输出已经重定向到了<code>dev/null</code>文件，即将标准出错也输出到<code>dev/null</code>文件 </li>
+</ol>
+<h4 id="启动应用"><a href="#启动应用" class="headerlink" title="启动应用"></a>启动应用</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">start_app</span></span>() &#123;</span><br><span class="line">    sleep 1</span><br><span class="line">    adb shell am start -n com.sds.android.ttpod/com.ali.music.entertainment.presentation.view.splash.SplashActivity</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用adb shell am来启动应用   </p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这个shell，实现了自动安装用户选择的apk到手机，里面包含了非常多的知识点，比如   </p>
+<blockquote>
+<p>case语法、if判断字符串非空、sed匹配、<code>||</code>管道、输出重定向、数组、数值赋值、判断软件是否存在</p>
+</blockquote>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/shell/">shell</a>
+          
+            <a href="/tags/code/">code</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/04/23/你还在用grep吗/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">你还在用grep吗？</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2015/11/27/appstore-slow/">
+        <span class="next-text nav-default">加速AppStore</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">xinpeng.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>
