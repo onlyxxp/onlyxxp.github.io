@@ -43,17 +43,17 @@
 <meta property="og:site_name" content="xxp-blog">
 <meta property="og:description" content="前言当进入到一个陌生的大型项目,  又或是为了疑难杂症要去阅读开源项目, 比如AOSP、OpenJDK 或 Linux Kernel这种大型开源项目,  会发现这些项目,  不仅仅代码量大得惊人(AOSP clone下来就有50G了),  还常常混合多种语言.  如何快速准确的查找代码调用关系、理清逻辑,  是非常大的挑战.  能胜任这种场景的工具,  可能只有Source Insight.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://img.alicdn.com/tfs/TB1z5izqpkoBKNjSZFkXXb4tFXa-2016-1442.png">
-<meta property="og:image" content="https://img.alicdn.com/tfs/TB1gDfeqBsmBKNjSZFsXXaXSVXa-1200-675.jpg">
-<meta property="og:image" content="https://img.alicdn.com/tfs/TB1G6FUqtcnBKNjSZR0XXcFqFXa-650-613.png">
-<meta property="og:image" content="https://img.alicdn.com/tfs/TB1aQmrqLImBKNjSZFlXXc43FXa-1383-837.png">
-<meta property="og:image" content="https://img.alicdn.com/tfs/TB18x9do7UmBKNjSZFOXXab2XXa-2774-1750.png">
-<meta property="og:image" content="https://img.alicdn.com/tfs/TB1uHNZo_qWBKNjSZFAXXanSpXa-1786-976.png">
-<meta property="og:updated_time" content="2019-07-30T13:51:01.016Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-01.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-02.jpg">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-03.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-04.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-05.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-06.png">
+<meta property="og:updated_time" content="2020-03-28T06:07:06.647Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="推荐一下阅读大项目神器OpenGrok">
 <meta name="twitter:description" content="前言当进入到一个陌生的大型项目,  又或是为了疑难杂症要去阅读开源项目, 比如AOSP、OpenJDK 或 Linux Kernel这种大型开源项目,  会发现这些项目,  不仅仅代码量大得惊人(AOSP clone下来就有50G了),  还常常混合多种语言.  如何快速准确的查找代码调用关系、理清逻辑,  是非常大的挑战.  能胜任这种场景的工具,  可能只有Source Insight.">
-<meta name="twitter:image" content="https://img.alicdn.com/tfs/TB1z5izqpkoBKNjSZFkXXb4tFXa-2016-1442.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-01.png">
 
 
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/css/style.css?v=1.1">
@@ -152,7 +152,7 @@
 <h4 id="1-4-ctags-amp-cscope的问题"><a href="#1-4-ctags-amp-cscope的问题" class="headerlink" title="1.4 ctags &amp; cscope的问题"></a>1.4 ctags &amp; cscope的问题</h4><p>无论是把Sublime换成Atom 或 VS Code,  又或是Vim环境,  都会遇到下面这两个问题:  </p>
 <p>第一,  ctags &amp; cscope都不支持增量索引,  每次更新代码后,  都需要对整个项目重建索引,  时间成本非常高</p>
 <p>第二,  ctags默认配置对包含java  c++等多语言的项目支持比较差.  要确保准确解析包含多语言的项目,  需要配置下面这种,  天书一样的参数.  </p>
-<p><img src="https://img.alicdn.com/tfs/TB1z5izqpkoBKNjSZFkXXb4tFXa-2016-1442.png" alt="ctag-config"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-01.png" alt="ctag-config"></p>
 <h3 id="2-体验OpenGrok"><a href="#2-体验OpenGrok" class="headerlink" title="2. 体验OpenGrok"></a>2. 体验OpenGrok</h3><p>一个偶然的机会，我找到了Sun的<a href="https://oracle.github.io/opengrok/" target="_blank" rel="noopener">OpenGrok</a>,  OpenGrok的界面,  浓浓的历史味道,  让人觉得这货不简单.  随着长时间的体验,  我更认定它就是Source Insight在Mac平台的替代品。 </p>
 <blockquote>
 <p>OpenGrok is a source code search and cross reference engine. It helps programmers to search, cross-reference and navigate source code trees  </p>
@@ -163,11 +163,11 @@
 <li><a href="http://androidxref.com/" target="_blank" rel="noopener">http://androidxref.com/</a> — Android</li>
 <li><a href="http://src.illumos.org/source/" target="_blank" rel="noopener">http://src.illumos.org/source/</a> — illumos, FreeBSD, Linux</li>
 </ul>
-<p><img src="https://img.alicdn.com/tfs/TB1gDfeqBsmBKNjSZFsXXaXSVXa-1200-675.jpg" alt="main-ui"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-02.jpg" alt="main-ui"></p>
 <h3 id="3-OpenGrok的功能介绍"><a href="#3-OpenGrok的功能介绍" class="headerlink" title="3 OpenGrok的功能介绍"></a>3 OpenGrok的功能介绍</h3><h4 id="3-1-Analysis功能"><a href="#3-1-Analysis功能" class="headerlink" title="3.1 Analysis功能"></a>3.1 Analysis功能</h4><p>OpenGrok有强大的Analysis功能</p>
 <p>Analysis支持主流的版本控制系统, 如CVS、Git、Mercurial等,  并能对SCM的记录进行分析,  然后提供快速查找history和展示Annotations的功能.</p>
 <p>Analysis还内置了很多分析引擎,  比如C/C++,  比如Shell,  比如XML等等,  在index的过程中,  每个文件,  会分配到这些引擎上解析,  为源码的变量/对象、结构体/类、函数/接口、宏等生成可供快速搜索的索引文件</p>
-<p><img src="https://img.alicdn.com/tfs/TB1G6FUqtcnBKNjSZR0XXcFqFXa-650-613.png" alt="analysis"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-03.png" alt="analysis"></p>
 <h4 id="3-2-搜索功能"><a href="#3-2-搜索功能" class="headerlink" title="3.2 搜索功能"></a>3.2 搜索功能</h4><p>与IDE的侧边栏文件树不同,  OpenGrok提供的是搜索直达.  这也非常符合我们看源码的场景,  源码非常庞杂,  我们常常是带着问题,  以某个函数或接口切入,  去摸索的.  </p>
 <p>OpenGrok的搜索功能是非常强大的:  </p>
 <ol>
@@ -182,9 +182,9 @@
 </ol>
 <p>详细的搜索帮助, 可以通过点击搜索框底部的<strong>help</strong>按钮进行学习,  会路由到一个help.jsp页面,  如 <a href="https://opengrok.housegordon.com/source/help.jsp" target="_blank" rel="noopener">https://opengrok.housegordon.com/source/help.jsp</a>  </p>
 <p>一个搜索到例子如下:</p>
-<p><img src="https://img.alicdn.com/tfs/TB1aQmrqLImBKNjSZFlXXc43FXa-1383-837.png" alt="opengrok-search"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-04.png" alt="opengrok-search"></p>
 <h4 id="3-3-主界面使用"><a href="#3-3-主界面使用" class="headerlink" title="3.3 主界面使用"></a>3.3 主界面使用</h4><h5 id="3-3-1-Navigate"><a href="#3-3-1-Navigate" class="headerlink" title="3.3.1 Navigate"></a>3.3.1 Navigate</h5><p>点击导航栏上面的 Navigate# ,  可以切换右侧方法列表展示</p>
-<p><img src="https://img.alicdn.com/tfs/TB18x9do7UmBKNjSZFOXXab2XXa-2774-1750.png" alt="image"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-05.png" alt="image"></p>
 <h5 id="3-3-2-intelligence-window"><a href="#3-3-2-intelligence-window" class="headerlink" title="3.3.2 intelligence window"></a>3.3.2 intelligence window</h5><p>先把鼠标箭头,  移动到目标方法上面,  然后按一下键盘上的数字 1,  可以呼出 intelligence window </p>
 <p>这里面有 </p>
 <ul>
@@ -193,7 +193,7 @@
 <li>Search references</li>
 </ul>
 <p>等等辅助理解代码关系的功能</p>
-<p><img src="https://img.alicdn.com/tfs/TB1uHNZo_qWBKNjSZFAXXanSpXa-1786-976.png" alt="image"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/onlyxxp/onlyxxp.github.io@master/images/2018/opengrok-06.png" alt="image"></p>
 <h5 id><a href="#" class="headerlink" title=" "></a> </h5><h5 id="3-3-3-highlight"><a href="#3-3-3-highlight" class="headerlink" title="3.3.3 highlight"></a>3.3.3 highlight</h5><p>先把鼠标箭头,  移动到目标方法上面,  然后按一下键盘上的数字 2,  可以快速切换Highlight / UnHighlight </p>
 <p>这个功能,  在理解某个方法的时候非常有用.</p>
 <h3 id="4-安装本地OpenGrok"><a href="#4-安装本地OpenGrok" class="headerlink" title="4 安装本地OpenGrok"></a>4 安装本地OpenGrok</h3><p>受制于网络情况和GFW,  本地会更加实用.  <a href="https://github.com/oracle/opengrok/wiki/How-to-setup-OpenGrok" target="_blank" rel="noopener">官方安装流程</a> 分为几大步骤:</p>
